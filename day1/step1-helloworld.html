@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function init(){
+           // document.getElementsByTagName("h1")[0].innerText = "welcome to your life";
+            var elms = document.querySelectorAll("h1");
+            for(var i = 0; i < elms.length; i++){
+                elms[i].innerText = "welcome to your life";
+            }
+            // console.log(i);
+        }
+        // window.onload = init;
+        // window.addEventListener("load", init);
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</head>
+<!--body onload="init()"-->
+<body>
+    ! or html:5 
+    <h1>1</h1>
+    <h1>2</h1>
+    <h1>3</h1>
+    <!--script>
+        init();
+    </script-->
+</body>
+</html>
+
+

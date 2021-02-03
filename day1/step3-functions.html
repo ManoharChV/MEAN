@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functional Programming</title>
+    <script>
+        // Default Parameters 
+        // function adder(num1 = 0, num2 = 0, num3 = 0){
+        //     return num1 + num2 + num3;
+        // };
+        // console.log( adder(1.5,2.3) );// 6
+
+        /*
+        function adder(){
+            let total = 0;
+            for(let i = 0; i < arguments.length; i++){
+                total+=arguments[i];
+            }
+            return total;
+        };
+        */
+       // REST Parameters
+       /*
+       function adder(...nums){
+           let total = 0;
+           for(let i = 0; i < nums.length; i++){
+               total+=nums[i];
+            }
+            return total;
+        };
+        console.log( adder(1,2,3,4,5) );// 15
+       */
+
+       function adder(...nums){
+           let total = 0;
+           for(let i = 0; i < nums.length; i++){
+               total+=nums[i];
+            }
+            return total;
+        };
+        let arr = [1,2,3,4,5];
+        //console.log( adder(arr[0], arr[1],arr[2]) );
+        // SPREAD Operator
+        console.log( adder(...arr) );
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

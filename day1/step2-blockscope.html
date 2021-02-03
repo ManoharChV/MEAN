@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Scope</title>
+    <script>
+        var hero = {
+            title : "Batman",
+            power : 6
+        }
+        // function changeTitle(){
+        //    var tempTitle = undefined;
+        //     if(hero.power > 5){
+        //        tempTitle = hero.title+" is Strong";
+        //        hero.title = tempTitle;
+        //     }
+        //     console.warn(tempTitle);
+        // }
+        function changeTitle(){
+            if(hero.power > 5){
+              let tempTitle = hero.title+" is Strong";
+              hero.title = tempTitle;
+              console.warn(tempTitle);
+            }
+        }
+        console.log(hero.title);
+        changeTitle();
+        console.log(hero.title);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
