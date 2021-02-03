@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+         let promise = new Promise(function(resolve, reject){
+           setTimeout(function(){
+               if(false){
+                resolve("Promise was resolved");
+               }else{
+                reject("Promise was rejected");
+               }
+           }, 2000);
+         });
+        promise.then(function(success){
+            console.log("Frist Then ",success);
+            return success;
+            }).then(function(success){
+            console.log("Second Then ",success.toUpperCase());
+            return success;
+            }).then(function(success){
+            console.log("Third Then ",success.toLowerCase());
+            }).catch(function(error){
+             console.log("In the Catch Block",error);
+            });
+         console.log("Line 24");
+         console.log("Line 25");
+         console.log("Line 26");
+         console.log("Line 27");
+         console.log("Line 28");
+        
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

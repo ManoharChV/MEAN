@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compositions</title>
+    <script>
+        function composition( fun1, fun2 ){
+            console.log("composition function executed");
+            return function(num){
+                console.log("inner function executed");
+                return fun1( fun2( num ) );
+            }
+        };
+        function firstFunction( num ){
+            console.log("firstFunction executed");
+            return num + num;
+        };
+        function secondFunction( num ){
+            console.log("secondFunction executed");
+            return num * num;
+        };
+        var comp = composition(firstFunction, secondFunction);
+            console.log( comp(5) ); // 50
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

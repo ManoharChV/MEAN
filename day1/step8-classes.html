@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes</title>
+    <script>
+        class Hero{
+            title;
+            fistname;
+            lastname;
+            _mission = "save the world";
+            static power = 5;
+            constructor(htitle, hfname, hlname){
+                this.title = htitle;
+                this.fistname = hfname;
+                this.lastname = hlname;
+            }
+            fullname(){
+                return this.fistname+" "+this.lastname;
+            }
+            get mission(){
+                return this._mission;
+            }
+            set mission(nmission){
+                this._mission = nmission;
+            }
+        };
+
+        let hero1 = new Hero("Ironman", "Tony", "Stark");
+        console.log( hero1.title, hero1.fullname() );
+        // console.log(hero1._mission);// wrong....
+        console.log(hero1.mission);
+        hero1.mission = "save new york";
+        console.log(hero1.mission);
+        console.log(Hero.power);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
