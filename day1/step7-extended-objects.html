@@ -58,6 +58,38 @@
                 console.log(prop, hero[prop]);
             }  
     */
+    let batman = Object.create(null);
+        Object.defineProperties(batman, {
+            title : {
+                value : "Batman",
+                enumerable : true
+            },
+            firstname : {
+                value : "Bruce"
+            },
+            lastname : {
+                value : "Wayne"
+            },
+            power : {
+                value : 7,
+                writable : true
+            },
+            fullname : {
+                value : function(){
+                    return this.firstname+" "+this.lastname;
+                },
+                enumerable : true
+            },
+            powerAccess : {
+                get : function(){
+                    return this.power
+                },
+                set : function(npower){
+                    this.power = npower;
+                }
+            }
+        });
+        console.log(batman.title, batman.fullname(), batman.powerAccess);
     </script>
 </head>
 <body>

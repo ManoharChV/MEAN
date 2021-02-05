@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classes</title>
     <script>
-        class Hero{
+        class Person{
+            constructor(hcity){
+                this.city = hcity;
+            }
+        }
+        class Hero extends Person{
             title;
             fistname;
             lastname;
             _mission = "save the world";
             static power = 5;
-            constructor(htitle, hfname, hlname){
+            constructor(htitle, hfname, hlname, hcity){
+                super(hcity);
                 this.title = htitle;
                 this.fistname = hfname;
                 this.lastname = hlname;
@@ -27,13 +33,14 @@
             }
         };
 
-        let hero1 = new Hero("Ironman", "Tony", "Stark");
+        let hero1 = new Hero("Ironman", "Tony", "Stark", "New York");
         console.log( hero1.title, hero1.fullname() );
         // console.log(hero1._mission);// wrong....
         console.log(hero1.mission);
         hero1.mission = "save new york";
         console.log(hero1.mission);
         console.log(Hero.power);
+        console.log(hero1.city);
     </script>
 </head>
 <body>
