@@ -1,0 +1,49 @@
+navigate in to the project folder
+npm init
+    npm init -y
+
+npm install express --save
+    npm i express --save
+
+nodemon 
+npm i nodemon -g 
+
+once the installation is done
+nodemon index.js
+
+
+Steps to serve JS modules
+-------------------------
+
+1 move all files to express-102 folder
+
+2 create a node project using : npm init -y
+
+3 install express in the project
+
+4 create an index.js file and configure 
+    express to serve the html file
+
+5 configure express to serve the static files 
+    from the current directory
+
+-------------------------
+Typescript
+npm i typescript -g 
+tsc -v
+
+tsc one.ts
+-------------------------
+
+navigate to the project folder
+tsc --init
+    this will generate a typescript config file
+
+change in line # 8, 17, 18
+
+-------------------------
+Angular 
+
+npm i @angular/cli -g
+
+ng new step1-helloworld
