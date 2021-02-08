@@ -1,0 +1,9 @@
+ng new day4-steps
+cd day4-steps
+ng serve 
+navigate in to the angular project
+ng g application step1-binding
+ng g application step2-directives
+ng g application step3-components
+----------------------------------
+ng g c child --project=step4-communication --flat -s -t --skipTests=true
