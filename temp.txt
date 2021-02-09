@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const e = require("express");
+
 //------------------------------------------
 // middle ware configuration
 let app = express();
@@ -31,6 +31,27 @@ mongoose.connect(uri, { useNewUrlParser : true, useUnifiedTopology: true }).then
 });
 //------------------------------------------
 // Rest configurations
+// READ
+app.get("/data", function(req, res){
+    Hero.find((error, heros) => {
+        if(error){
+            handleError(error);
+            res.end();
+        }else{
+            res.send(heros)
+        }
+    })
+})
+// CREATE
+app.post("/data", function(req, res){
+    let hero = new Hero( req.body );
+    hero.save().then( (nhero) => { res.send(nhero)} ); 
+})
+// BEFORE UPDATE
+
+// UPDATE
+
+// DELETE
 
 //------------------------------------------
 // web server configurations
