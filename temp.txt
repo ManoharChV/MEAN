@@ -1,108 +1,44 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  template : `
-  <h1>Heroes Application</h1>
-  <ul>
-    <li *ngFor="let hero of heroes">{{ hero.title }}</li>
-  </ul>
-  <table class="table table-striped table-secondary">
-    <thead class="table-dark">
-        <tr>
-          <th>Sl #</th>
-          <th>Title</th>
-          <th>Poster</th>
-          <th>Full Name</th>
-          <th>City</th>
-          <th>Ticket Price</th>
-          <th>Release Date</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let hero of heroes">
-        <td>{{ hero.sl }}</td>
-        <td>{{ hero.title | uppercase }}</td>
-        <td>
-          <img width="80" src="{{ hero.poster }}" alt="{{ hero.title }}">
-        </td>
-        <td>{{ hero.firstname+' '+hero.lastname }}</td>
-        <td>{{ hero.city }}</td>
-        <td>{{ hero.ticketprice | currency : 'INR' : 'symbol' : '4.2-2' }}</td>
-        <td>{{ hero.releasedate | date : 'dd-MMMM-yyyy' }}</td>
-      </tr>
-    </tbody>
-  </table>
-  `,
-  styles: [`
-  
-  `]
-})
-export class AppComponent {
-  title = 'step5-pipes';
-  heroes = [{
-    "sl": 1,
-    "title": "Batman",
-    "gender": "male",
-    "firstname": "Bruce",
-    "lastname": "Wayne",
-    "city": "Gotham",
-    "ticketprice": 123.450987,
-    "releasedate": "1/26/2021",
-    "poster": "assets/images/batman.jpg"
-},
-{
-    "sl": 2,
-    "title": "Superman",
-    "gender": "male",
-    "firstname": "Clark",
-    "lastname": "Kent",
-    "city": "Metropolis",
-    "ticketprice": 178,
-    "releasedate": "1/27/2021",
-    "poster": "assets/images/superman.jpg"
-},
-{
-    "sl": 3,
-    "title": "Ironman",
-    "gender": "male",
-    "firstname": "Tony",
-    "lastname": "Stark",
-    "city": "New York",
-    "ticketprice": 122.90,
-    "releasedate": "1/27/2021",
-    "poster": "assets/images/ironman.jpg"    
-}, {
-    "sl": 4,
-    "title": "Phantom",
-    "gender": "male",
-    "firstname": "Kit",
-    "lastname": "Walker",
-    "city": "Bhangala",
-    "ticketprice": 98.64,
-    "releasedate": "1/27/2021",
-    "poster": "assets/images/phantom.jpg"
-}, {
-    "sl": 5,
-    "title": "Spiderman",
-    "gender": "male",
-    "firstname": "Peter",
-    "lastname": "Parker",
-    "city": "New York",
-    "ticketprice": 451.34,
-    "releasedate": "9/26/2021",
-    "poster": "assets/images/spiderman.jpg"
-},
-{
-    "sl": 6,
-    "title": "Wonder Women",
-    "gender": "female",
-    "firstname": "Princess",
-    "lastname": "Diana",
-    "city": "Amazon",
-    "ticketprice": 341.34,
-    "releasedate": "11/26/2021",
-    "poster": "assets/images/wonderwoman.png"
-}]
-
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyparser = require("body-parser");
+const e = require("express");
+//------------------------------------------
+// middle ware configuration
+let app = express();
+app.use(cors());
+//------------------------------------------
+// miscl
+let handleError = function(err){
+    console.log("Error", err)
 }
+//------------------------------------------
+// DB Config
+let Schema = mongoose.Schema;
+let ObjectId = Schema.ObjectId;
+let Hero = mongoose.model("Hero", new Schema({
+    "id": ObjectId,
+    "title": String,
+    "city": String,
+    "ticketprice": Number 
+}));
+mongoose.Promise = global.Promise;
+let uri = "mongodb://127.0.0.1:27017/friendsdb";
+mongoose.connect(uri, { useNewUrlParser : true, useUnifiedTopology: true }).then(()=>{
+    console.log("Database is now connected");
+}).catch((error) => {
+    handleError(error);
+});
+//------------------------------------------
+// Rest configurations
+
+//------------------------------------------
+// web server configurations
+app.listen(3030, "localhost", function(err){
+    if(err){
+        handleError(err);
+    }else{
+        console.log("server is now live on localhost : 3030 ")
+    }
+})
+//------------------------------------------
