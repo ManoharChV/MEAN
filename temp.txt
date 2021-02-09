@@ -1,14 +1,19 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
-@Injectable()
-export class HeroCRUDService{
-    constructor(private http:HttpClient ){}
 
-    getHeroData(){
-        return this.http.get("http://localhost:3030/data");
-    }
-    writeHeroData(newhero){
-        return this.http.post("http://localhost:3030/data", newhero);
-    }
-}
+import { AppComponent } from './app.component';
+import { HeroCRUDService } from './hero.service';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule, HttpClientModule
+  ],
+  providers: [HeroCRUDService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
