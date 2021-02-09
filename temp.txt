@@ -1,38 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { HeroCRUDService } from './hero.service';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
-@Component({
-  selector: 'app-root',
-  template : `
-  <h1>CRUD Application</h1>
-  <table>
-    <thead>
-      <tr>
-       <th> Sl # </th>
-       <th> Title </th>
-       <th> City </th>
-       <th> Ticket Price </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let hero of herolist; index as idx">
-       <td>{{ idx+1 }}</td>
-       <td>{{ hero.title }}</td>
-       <td>{{ hero.city }}</td>
-       <td>{{ hero.ticketprice }}</td>
-      </tr>
-    </tbody>
-  </table>
-  `
-})
-export class AppComponent implements OnInit {
-  title = 'step7-crud';
-  herolist
-  constructor(private hs:HeroCRUDService){}
-  ngOnInit(){
-    this.hs.getHeroData().subscribe((res) => {
-      // console.log(res);
-      this.herolist = res;
-    })
-  }
+@Injectable()
+export class HeroCRUDService{
+    constructor(private http:HttpClient ){}
+
+    getHeroData(){
+        return this.http.get("http://localhost:3030/data");
+    }
+    writeHeroData(newhero){
+        return this.http.post("http://localhost:3030/data", newhero);
+    }
 }
