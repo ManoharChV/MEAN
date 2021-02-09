@@ -1,137 +1,105 @@
-app.component.ts
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyparser = require("body-parser");
 
-import { Component, OnInit } from '@angular/core';
-import { HeroCRUDService } from './hero.service';
-
-@Component({
-  selector: 'app-root',
-  template : `
-  <h1>CRUD Application</h1>
-  
-  <table>
-    <tbody>
-      <tr>
-       <td>Title</td>
-       <td> <input [(ngModel)]="nhero.title" > </td>
-      </tr>
-      <tr>
-       <td>City</td>
-       <td> <input [(ngModel)]="nhero.city" > </td>
-      </tr>
-      <tr>
-        <td>Ticket Price</td>
-        <td> <input [(ngModel)]="nhero.ticketprice"  > </td>
-      </tr>
-       <tr>
-         <td> </td>
-         <td> <button (click)="addHero()">Add New Hero</button> </td>
-       </tr>
-    </tbody>
-  </table>
-  <p>
-  Title : {{ nhero.title }}
-  <br>
-  City : {{ nhero.city }}
-  <br>
-  Ticket Price : {{ nhero.ticketprice }}
-  <br>
-  </p>
-  <hr>
-  <table>
-    <thead>
-      <tr>
-       <th> Sl # </th>
-       <th> Title </th>
-       <th> City </th>
-       <th> Ticket Price </th>
-       <th> Edit </th>
-       <th> Delete </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let hero of herolist; index as idx">
-       <td>{{ idx+1 }}</td>
-       <td>{{ hero.title }}</td>
-       <td>{{ hero.city }}</td>
-       <td>{{ hero.ticketprice }}</td>
-       <td>
-         <button>Edit Hero Info</button>
-       </td>
-       <td>
-         <button>Delete Hero</button>
-       </td>
-      </tr>
-    </tbody>
-  </table>
-  `
-})
-export class AppComponent implements OnInit {
-  title = 'step7-crud';
-  herolist;
-  nhero = {
-    "title": '',
-    "city": '',
-    "ticketprice": '' 
-  };
-
-  constructor(private hs:HeroCRUDService){}
-  ngOnInit(){
-    this.refresh();
-  }
-  refresh(){
-    this.hs.getHeroData().subscribe((res) => {
-      this.herolist = res;
-    })
-  }
-  addHero(){
-    this.hs.writeHeroData(this.nhero).subscribe((res) => {
-      this.refresh();
-    })
-  }
+//------------------------------------------
+// middle ware configuration
+let app = express();
+app.use(cors());
+app.use(bodyparser.json());
+//------------------------------------------
+// miscl
+let handleError = function(err){
+    console.log("Error", err)
 }
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-app.module.ts
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
-
-import { AppComponent } from './app.component';
-import { HeroCRUDService } from './hero.service';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [ BrowserModule, HttpClientModule, FormsModule ],
-  providers: [HeroCRUDService],
-  bootstrap: [AppComponent]
+//------------------------------------------
+// DB Config
+let Schema = mongoose.Schema;
+let ObjectId = Schema.ObjectId;
+let Hero = mongoose.model("Hero", new Schema({
+    "id": ObjectId,
+    "title": String,
+    "city": String,
+    "ticketprice": Number 
+}));
+mongoose.Promise = global.Promise;
+let uri = "mongodb://127.0.0.1:27017/friendsdb";
+mongoose.connect(uri, { useNewUrlParser : true, useUnifiedTopology: true }).then(()=>{
+    console.log("Database is now connected");
+}).catch((error) => {
+    handleError(error);
+});
+//------------------------------------------
+// Rest configurations
+// READ
+app.get("/data", function(req, res){
+    Hero.find((error, heros) => {
+        if(error){
+            handleError(error);
+            res.end();
+        }else{
+            res.send(heros)
+        }
+    })
 })
-export class AppModule { }
+// CREATE
+app.post("/data", function(req, res){
+    console.log("recieved post data", req.body);
+    let hero = new Hero( req.body );
+    hero.save().then( (nhero) => { 
+        res.send(nhero)
+     } ).catch((error)=>{ 
+        handleError(error);
+        res.end();
+    }); 
+})
+// BEFORE UPDATE
+app.get("/data/:heroid", function(req, res){
+    Hero.findById(req.params.heroid, (error, hero) => {
+        if(error){
+            handleError(error);
+            res.end();
+        }else{
+            res.send(hero);
+        }
+    })
+})
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// UPDATE
+app.post("/data/:id", function(req, res){
+    Hero.findById(req.params.id, (error, hero) => {
+        if(error){
+            handleError(error);
+            res.end();
+        }else{
+            hero.title = req.body.title;
+            hero.city = req.body.city;
+            hero.ticketprice = req.body.ticketprice;
+            hero.save().then( udhero => res.send( udhero ));
+            res.send({"savedhero" : hero });
+        }
+    })
+})
 
-hero.service.ts
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+// DELETE
+app.delete("/delete/:id", function(req, res){
+    Hero.findByIdAndDelete({ _id: req.params.id }, (error, delhero) => {
+        if(error){
+            handleError(error);
+        }else{
+            res.send({"deleted ": delhero })
+        }
+    })
+})
 
-@Injectable()
-export class HeroCRUDService{
-    constructor(private http:HttpClient ){}
-
-    getHeroData(){
-        return this.http.get("http://localhost:3030/data");
+//------------------------------------------
+// web server configurations
+app.listen(3030, "localhost", function(err){
+    if(err){
+        handleError(err);
+    }else{
+        console.log("server is now live on localhost : 3030 ")
     }
-    writeHeroData(newhero){
-        return this.http.post("http://localhost:3030/data", newhero);
-    }
-}
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+})
+//------------------------------------------
